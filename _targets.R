@@ -158,5 +158,11 @@ list(
     ) |>
     select(wflow_id, everything()) |>
     pivot_metrics()
+  ),
+  # write metrics to repository
+  tar_target(
+    write_metrics,
+    valid_metrics |>
+    write_csv("targets-runs/valid_metrics.csv")
   )
 )

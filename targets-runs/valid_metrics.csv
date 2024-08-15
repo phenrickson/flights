@@ -1,0 +1,2 @@
+wflow_id,.estimator,n,std_err,.config,mn_log_loss,pr_auc,roc_auc
+baseline_glm,binary,1,NA,Preprocessor1_Model1,0.43059118378255334,0.1981208599467222,0.5809396459869294
