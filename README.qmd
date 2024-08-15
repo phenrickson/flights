@@ -1,0 +1,44 @@
+---
+title: "README"
+format: gfm
+---
+
+# flights
+
+illustrating `targets` and `tidymodels` with `nycflights13` data
+
+```{r}
+#| message: false
+#| echo: false
+#| results: "asis"
+
+cat(c("```mermaid", targets::tar_mermaid(targets_only = T), "```"), sep = "\n")
+
+```
+
+# model runs
+
+## validation
+
+```{r}
+
+valid_metrics = read.csv("targets-runs/valid_metrics.csv")
+
+valid_metrics |>
+    dplyr::arrange(mn_log_loss) |>
+    gt::gt() |>
+    gt::as_raw_html()
+
+```
+
+## test
+
+```{r}
+
+test_metrics = read.csv("targets-runs/test_metrics.csv")
+
+test_metrics |>
+    gt::gt() |>
+    gt::as_raw_html()
+
+```
