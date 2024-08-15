@@ -272,13 +272,21 @@ list(
         metrics = my_metrics
       )
     ),
+    # results
+    tar_target(
+      lightgbm_results,
+      lightgbm_tuned |>
+        collect_metrics() |>
+        mutate(wflow_id = "lightgbm_flights")
+    ),
     # bind together model metrics
     tar_target(
       name = valid_metrics,
       command =
       bind_rows(
         baseline_results,
-        glmnet_results
+        glmnet_results,
+        lightgbm_results
       ) |>
       select(wflow_id, everything()) |>
       pivot_metrics()
