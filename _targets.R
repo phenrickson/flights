@@ -149,12 +149,106 @@ list(
     collect_metrics() |>
     mutate(wflow_id = 'baseline_glm')
   ),
+  # evaluate a penalized regression with all features
+  # create a recipe incorporating predictors
+  tar_target(
+    flights_recipe,
+    train_data |>
+    recipe(
+      arr_delay ~ .,
+      data = _) |>
+      # set everything to ID by default
+      update_role(everything(),
+      -all_outcomes(),
+      new_role = "id") |>
+      # set other predictors
+      add_role(
+        date,
+        dep_time,
+        carrier,
+        origin,
+        dest,
+        air_time,
+        distance,
+        new_role = "predictor"
+      ) |>
+      # craeate features for dates
+      step_date(date, features = c("dow", "month")) |>
+      step_holiday(date,
+        holidays = timeDate::listHolidays("US"),
+        keep_original_cols = FALSE
+      ) |>
+      # impute numeric
+      step_impute_median(
+        all_numeric_predictors()
+      ) |>
+      # nominal variables
+      # novel
+      step_novel(
+        all_nominal_predictors()
+      ) |>
+      # unknown
+      step_unknown(
+        all_nominal_predictors()
+      ) |>
+      # dummy
+      step_dummy(
+        all_nominal_predictors()
+      ) |>
+      # remove zero variance
+      step_zv(all_predictors()
+    )
+  ),
+  tar_target(
+    glmnet_mod,
+    logistic_reg(
+      penalty = tune::tune(),
+      mixture = tune::tune()
+    ) |>
+    set_engine(engine = "glmnet")
+  ),
+  tar_target(
+    glmnet_grid,
+    expand_grid(
+      penalty = 10^seq(-3, -0.75, length = 10),
+      mixture = c(0, 0.5, 1)
+    )
+  ),
+  # glmnet wflow
+  tar_target(
+    glmnet_wflow,
+    workflow() |>
+    add_model(glmnet_mod) |>
+    add_recipe(
+      flights_recipe |>
+      step_normalize(all_numeric_predictors())
+    )
+  ),
+  # tune glmnet
+  tar_target(
+    glmnet_tuned,
+    glmnet_wflow |>
+    tune_grid(
+      grid = glmnet_grid,
+      resamples = split |> validation_set(),
+      control = my_ctrl,
+      metrics = my_metrics
+    ),
+  ),
+  # get results
+  tar_target(
+    glmnet_results,
+    glmnet_tuned |>
+    collect_metrics() |>
+    mutate(wflow_id = 'glmnet_flights')
+  ),
   # bind together model metrics
   tar_target(
     name = valid_metrics,
     command =
     bind_rows(
-      baseline_results
+      baseline_results,
+      glmnet_results
     ) |>
     select(wflow_id, everything()) |>
     pivot_metrics()
@@ -163,6 +257,9 @@ list(
   tar_target(
     write_metrics,
     valid_metrics |>
+    mutate_if(is.numeric, round, 3) |>
     write_csv("targets-runs/valid_metrics.csv")
   )
+  # examine result on test set
+  # finalize fit on entire dataset
 )
