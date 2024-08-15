@@ -302,7 +302,7 @@ list(
     # select best model and refit on train+validation
     tar_target(
       best_model,
-      glmnet_tuned |>
+      lightgbm_tuned |>
       fit_best(metric = 'mn_log_loss')
     ),
     # predict test set

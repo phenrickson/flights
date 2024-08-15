@@ -1,2 +1,2 @@
 .estimator,roc_auc,pr_auc,mn_log_loss
-binary,0.749,0.389,0.379
+binary,0.889,0.702,0.268
