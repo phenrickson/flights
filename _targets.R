@@ -242,51 +242,89 @@ list(
     collect_metrics() |>
     mutate(wflow_id = 'glmnet_flights')
   ),
-  # bind together model metrics
+  # lightgbm
   tar_target(
-    name = valid_metrics,
-    command =
-    bind_rows(
-      baseline_results,
-      glmnet_results
-    ) |>
-    select(wflow_id, everything()) |>
-    pivot_metrics()
-  ),
-  # write metrics to repository
-  tar_target(
-    write_metrics,
-    valid_metrics |>
-    mutate_if(is.numeric, round, 3) |>
-    write_csv("targets-runs/valid_metrics.csv")
-  ),
-  # examine result on test set
-  # select best model and refit on train+validation
-  tar_target(
-    best_model,
-    glmnet_tuned |>
-    fit_best(metric = 'mn_log_loss')
-  ),
-  # predict test set
-  tar_target(
-    test_preds,
-    best_model |>
-    augment(test_data)
-  ),
-  # evaluate on test set
-  tar_target(
-    test_metrics,
-    test_preds |>
+    lightgbm_mod,
+    parsnip::boost_tree(
+      mode = "classification",
+      trees = tune::tune(),
+      min_n = tune(),
+      tree_depth = tune()) |>
+      set_engine("lightgbm", objective = "binary")
+    ),
+    # create wflow
+    tar_target(
+      lightgbm_wflow,
+      workflow() |>
+      add_model(lightgbm_mod) |>
+      add_recipe(
+        flights_recipe
+      )
+    ),
+    # tune
+    tar_target(
+      lightgbm_tuned,
+      lightgbm_wflow |>
+      tune_grid(
+        grid = 5,
+        resamples = split |> validation_set(),
+        control = my_ctrl,
+        metrics = my_metrics
+      )
+    ),
+    # results
+    tar_target(
+      lightgbm_results,
+      lightgbm_tuned |>
+        collect_metrics() |>
+        mutate(wflow_id = "lightgbm_flights")
+    ),
+    # bind together model metrics
+    tar_target(
+      name = valid_metrics,
+      command =
+      bind_rows(
+        baseline_results,
+        glmnet_results,
+        lightgbm_results
+      ) |>
+      select(wflow_id, everything()) |>
+      pivot_metrics()
+    ),
+    # write metrics to repository
+    tar_target(
+      write_metrics,
+      valid_metrics |>
+      mutate_if(is.numeric, round, 3) |>
+      write_csv("targets-runs/valid_metrics.csv")
+    ),
+    # examine result on test set
+    # select best model and refit on train+validation
+    tar_target(
+      best_model,
+      lightgbm_tuned |>
+      fit_best(metric = 'mn_log_loss')
+    ),
+    # predict test set
+    tar_target(
+      test_preds,
+      best_model |>
+      augment(test_data)
+    ),
+    # evaluate on test set
+    tar_target(
+      test_metrics,
+      test_preds |>
       my_metrics(
         truth = arr_delay,
         .pred_late,
         event_level = 'second'
       )
-  ),
-  # refit model to full dataset
-  tar_target(
-    final_model,
-    best_model |>
+    ),
+    # refit model to full dataset
+    tar_target(
+      final_model,
+      best_model |>
       fit(split$data) |>
       vetiver::vetiver_model(
         model_name = "flights_arr_delay",
@@ -295,13 +333,13 @@ list(
           data = split$data
         )
       )
-  ),
-  # write final metrics
-  tar_target(
-    write_test,
-    test_metrics |>
+    ),
+    # write final metrics
+    tar_target(
+      write_test,
+      test_metrics |>
       pivot_metrics() |>
       mutate_if(is.numeric, round, 3) |>
       write_csv("targets-runs/test_metrics.csv")
+    )
   )
-)
