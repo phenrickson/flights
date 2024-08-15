@@ -295,5 +295,13 @@ list(
           data = split$data
         )
       )
+  ),
+  # write final metrics
+  tar_target(
+    write_test,
+    test_metrics |>
+      pivot_metrics() |>
+      mutate_if(is.numeric, round, 3) |>
+      write_csv("targets-runs/test_metrics.csv")
   )
 )
