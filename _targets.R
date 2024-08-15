@@ -5,7 +5,7 @@
 
 # Load packages required to define the pipeline:
 library(targets)
-# library(tarchetypes) # Load other packages as needed.
+library(tarchetypes) # Load other packages as needed.
 
 # Set target options:
 tar_option_set(
@@ -67,6 +67,96 @@ list(
   tar_target(
     test_data,
     split |>
-      testing()
+    testing()
+  ),
+  # plot split
+  tar_target(
+    plot_split,
+    bind_rows(
+      split |>
+      training() |>
+      mutate(type = "training"),
+      split |>
+      validation() |>
+      mutate(type = "validation"),
+      split |>
+      testing() |>
+      mutate(type = "testing"),
+    ) |>
+    mutate(type = factor(type, levels = c("testing", "validation", "training"))) |>
+    group_by(date = floor_date(date, "month"), type) |>
+    count() |>
+    ggplot(aes(x = date, y = n, fill = type)) +
+    geom_col() +
+    scale_fill_viridis_d()
+  ),
+  # examine missigness
+  tar_target(
+    plot_missing,
+    train_data |>
+    naniar::vis_miss(warn_large_data = F)
+  ),
+  # add settings for model tuning/eval
+  tar_target(
+    my_ctrl,
+    control_resamples(
+      event_level = "second",
+      verbose = T,
+      save_workflow = T
+    ),
+  ),
+  tar_target(
+    my_metrics,
+    metric_set(
+      yardstick::roc_auc,
+      yardstick::pr_auc,
+      yardstick::mn_log_loss
+    )
+  ),
+  # add simple model as a baseline
+  tar_target(
+    baseline_wflow,
+    workflow() |>
+    add_model(
+      logistic_reg()
+    ) |>
+    add_recipe(
+      recipe(
+        arr_delay ~ air_time + distance,
+        data = train_data
+      ) |>
+      step_impute_median(
+        all_numeric_predictors()
+      )
+    )
+  ),
+  # evaluate model on validation set
+  tar_target(
+    baseline_tuned,
+    baseline_wflow |>
+    tune_grid(
+      resamples = split |>
+      validation_set(),
+      control = my_ctrl,
+      metrics = my_metrics
+    )
+  ),
+  # extract results
+  tar_target(
+    name = baseline_results,
+    command =
+    baseline_tuned |>
+    collect_metrics() |>
+    mutate(wflow_id = 'baseline_glm')
+  ),
+  # bind together model metrics
+  tar_target(
+    name = valid_metrics,
+    command =
+    bind_rows(
+      baseline_results
+    ) |>
+    select(wflow_id, everything()) |>
+    pivot_metrics()
   )
 )
