@@ -36,6 +36,12 @@ jobs:
           r-version: ${{ matrix.r-version }}
           use-public-rspm: true
           
+      - name: Install additional Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libgit2-dev libglpk40
+          
       - name: Setup renv and install packages
         uses: r-lib/actions/setup-renv@v2
         with:
