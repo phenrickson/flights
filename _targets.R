@@ -259,7 +259,41 @@ list(
     valid_metrics |>
     mutate_if(is.numeric, round, 3) |>
     write_csv("targets-runs/valid_metrics.csv")
-  )
+  ),
   # examine result on test set
-  # finalize fit on entire dataset
+  # select best model and refit on train+validation
+  tar_target(
+    best_model,
+    glmnet_tuned |>
+    fit_best(metric = 'mn_log_loss')
+  ),
+  # predict test set
+  tar_target(
+    test_preds,
+    best_model |>
+    augment(test_data)
+  ),
+  # evaluate on test set
+  tar_target(
+    test_metrics,
+    test_preds |>
+      my_metrics(
+        truth = arr_delay,
+        .pred_late,
+        event_level = 'second'
+      )
+  ),
+  # refit model to full dataset
+  tar_target(
+    final_model,
+    best_model |>
+      fit(split$data) |>
+      vetiver::vetiver_model(
+        model_name = "flights_arr_delay",
+        metadata = list(
+          metrics = test_metrics,
+          data = split$data
+        )
+      )
+  )
 )
