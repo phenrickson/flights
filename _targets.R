@@ -35,6 +35,10 @@ list(
     command = nycflights13::flights
   ),
   tar_target(
+    name = weather,
+    command = nycflights13::weather
+  ),
+  tar_target(
     name = flights_prepared,
     command = flights |> prepare_flights()
   ),
@@ -57,13 +61,12 @@ list(
   tar_target(
     train_data,
     split |>
-      training()
+    training()
   ),
-  # examine missigness
+  # test set; do not touch until the end
   tar_target(
-    missigness,
-    train_data |>
-      naniar::vis_miss(warn_large_data = F)
+    test_data,
+    split |>
+      testing()
   )
-
 )
