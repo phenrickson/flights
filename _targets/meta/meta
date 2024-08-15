@@ -1,0 +1,6 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+prepare_weather|function|a03969a4ff571066
+add_delay|function|a89974e75d4e05de
+add_date|function|5074652b29c3bc01
+prepare_flights|function|ccace739534a1b4e
+flights|stem||e183a19fcab9cedd|2c530c1562a7fbd1|1045847332||t19950.7462925164s||0|qs|local|vector|||1.474|no nonmissing arguments to max returning Inf|could not find packages glmnet in library paths 
