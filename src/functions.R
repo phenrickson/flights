@@ -50,3 +50,12 @@ prepare_flights = function(data) {
   )
 
 }
+
+pivot_metrics = function(data, values = c('mean', '.estimate')) {
+
+  data |>
+  pivot_wider(
+    names_from = .metric,
+    values_from = any_of(values)
+  )
+}
