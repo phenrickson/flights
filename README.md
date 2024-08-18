@@ -5,8 +5,6 @@
 
 illustrating `targets` and `tidymodels` with `nycflights13` data
 
-- The project is out-of-sync – use `renv::status()` for details.
-
 ``` mermaid
 graph LR
   style Legend fill:#FFFFFF00,stroke:#000000;
@@ -84,7 +82,7 @@ valid_metrics |>
     gt::as_raw_html()
 ```
 
-<div id="bfzkxnexvc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="oepcwkvcoh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   &#10;  
 
 | wflow_id | .estimator | n | std_err | .config | penalty | mixture | trees | min_n | tree_depth | mn_log_loss | pr_auc | roc_auc |
@@ -138,7 +136,7 @@ test_metrics |>
     gt::as_raw_html()
 ```
 
-<div id="szyhvzoisk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="oyaosjuxxb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   &#10;  
 
 | .estimator | roc_auc | pr_auc | mn_log_loss |
