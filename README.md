@@ -78,6 +78,7 @@ valid_metrics |>
     gt::as_raw_html()
 ```
 
+
 <div id="ermjvykrtg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   &#10;  
 
@@ -133,6 +134,7 @@ test_metrics |>
 ```
 
 <div id="ttjeweoifk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+
   &#10;  
 
 | .estimator | roc_auc | pr_auc | mn_log_loss |
