@@ -78,7 +78,8 @@ valid_metrics |>
     gt::as_raw_html()
 ```
 
-<div id="oztyqfvgwd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+
+<div id="ermjvykrtg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   &#10;  
 
 | wflow_id | .estimator | n | std_err | .config | penalty | mixture | trees | min_n | tree_depth | mn_log_loss | pr_auc | roc_auc |
@@ -132,7 +133,8 @@ test_metrics |>
     gt::as_raw_html()
 ```
 
-<div id="pusnpxtdmm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ttjeweoifk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+
   &#10;  
 
 | .estimator | roc_auc | pr_auc | mn_log_loss |
