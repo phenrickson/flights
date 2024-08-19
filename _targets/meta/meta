@@ -3,9 +3,9 @@ add_date|function|5074652b29c3bc01|||||||||||||||
 add_delay|function|a89974e75d4e05de|||||||||||||||
 base_recipe|stem|9fc76a32844d7ae9|4a94367f57f4f971|bd5f861afd98dcc4|1949704923||t19950.7521233086s|5b036697b16ebbf8|13294735|qs|local|vector|||0.085||
 base_wflow|stem|892c5000e179698b|adb4760b4b102917|bd5f861afd98dcc4|-341556513||t19950.7618203271s|854ab3a8ece790cb|7197608|qs|local|vector|||0.005||
-baseline_results|stem|6e3a38d62c695ca9|099d3e6781cee7f5|1c94710b9e40da52|1662720243||t19950.7700794181s|bc4f0fdabb53b2aa|260|qs|local|vector|||0.007||
-baseline_tuned|stem|72928f533a7d8a26|4d1f3d8828556b55|7a1d3b442e9154c5|456351208||t19950.7644314483s|efb15d7acadba1c9|16200019|qs|local|vector|||0.946|No tuning parameters have been detected, performance will be evaluated using the resamples with no tuning. Did you want to tune parameters|
-baseline_wflow|stem|357b5f0401a04b60|adb4760b4b102917|bd5f861afd98dcc4|-687549332||t19950.7636701774s|5e227b069f241cc7|7197605|qs|local|vector|||0.007||
+baseline_results|stem|9b93cefb34430356|099d3e6781cee7f5|7b069059d4a55fa6|1662720243||t19954.6228608509s|ee4e85b92dca648d|259|qs|local|vector|||0.007||
+baseline_tuned|stem|ada2e51d70b4f6d0|4d1f3d8828556b55|eb086932b1f972d7|456351208||t19954.6228590501s|34bba511ae1c5d55|16355980|qs|local|vector|||0.952|No tuning parameters have been detected, performance will be evaluated using the resamples with no tuning. Did you want to tune parameters|
+baseline_wflow|stem|dd785bf85f33a6c4|1cb1ef763bc01291|bd5f861afd98dcc4|-687549332||t19954.6228405568s|2511895258f383df|7359512|qs|local|vector|||0.005||
 flights|stem|2607346b97c09a54|e183a19fcab9cedd|2c530c1562a7fbd1|1045847332||t19950.7491453953s|fd3ca5d46fe9f8a1|5686050|qs|local|vector|||2.28||
 flights_prepared|stem|17da5ac7a48cc20a|a033927027bab002|4e2a00b365ce78b1|1074580043||t19950.7494585941s|f8754385f472f566|4999424|qs|local|vector|||0.535||
 full_data|stem|9760f8d2751f58d0|4eb6313523897754|82650f3b794ced56|34231949||t19950.7494657535s|76b42969a808426b|10870134|qs|local|vector|||0.189||
@@ -20,7 +20,7 @@ prepare_weather|function|a03969a4ff571066|||||||||||||||
 split|stem|456c1f0162c32a42|c4e89903d97e6208|abb84458a12da5fd|-1148405872||t19950.7494724445s|1a6e9480f717a5cb|11068198|qs|local|vector|||0.245||
 test_data|stem|658fb5e7f62e9f82|25378930d4e5ed16|6d6d83c6dd5c48e9|771182612||t19950.7553498928s|409eed3190796099|2365270|qs|local|vector|||0.134||
 train_data|stem|ae12340493a9e724|577a97f17f3238a7|6d6d83c6dd5c48e9|1410565984||t19950.7494766332s|a3fe312e2b917597|6646352|qs|local|vector|||0.034||
-valid_metrics|stem|56f08c77626acf73|716e8ca693a3c185|b90df2121e2b545a|27008866||t19950.7771695692s|ef7f9a4a5db64333|234|qs|local|vector|||0.004||
+valid_metrics|stem|a921d65eb1dab92f|716e8ca693a3c185|a94485b700e5a14c|27008866||t19954.6228609179s|ef7f9a4a5db64333|234|qs|local|vector|||0.003||
 weather|stem|b70b1f8b2666299f|ef86d182a1128af1|2c530c1562a7fbd1|-576005956||t19950.7494499896s|fdc91ca81cfb5130|590229|qs|local|vector|||1.495||
 weather_prepared|stem|4b77890b174c9529|7dff92be17e1d08a|47ffff1bf0e5298d|2012693249||t19950.7494589151s|930acff57d9ebe15|576157|qs|local|vector|||0.002||
-write_metrics|stem|56f08c77626acf73|8847376314babc46|82dd2e27c1305351|1977194065||t19950.7819563155s|ef7f9a4a5db64333|234|qs|local|vector|||0.068||
+write_metrics|stem|a921d65eb1dab92f|8847376314babc46|f8aaeffb8358a132|1977194065||t19954.6228615872s|ef7f9a4a5db64333|234|qs|local|vector|||0.055||
